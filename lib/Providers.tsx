@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 
 export type NextPage<P = {}, IP = P> = NextNextPage<P, IP> & {
   forcedTheme?: string;
+  getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
 export type AppProps = NextAppProps & {
