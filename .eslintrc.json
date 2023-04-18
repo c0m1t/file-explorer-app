@@ -1,7 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/eslintrc",
   "root": true,
-  "extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended", "prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:tailwindcss/recommended",
+    "plugin:typescript-sort-keys/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["typescript-sort-keys"],
   "rules": {
     "react/jsx-sort-props": "error",
     "tailwindcss/classnames-order": "error"
