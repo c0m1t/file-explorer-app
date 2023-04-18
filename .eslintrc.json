@@ -3,6 +3,7 @@
   "root": true,
   "extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended", "prettier"],
   "rules": {
+    "react/jsx-sort-props": "error",
     "tailwindcss/classnames-order": "error"
   }
 }
