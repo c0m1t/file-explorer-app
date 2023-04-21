@@ -12,5 +12,10 @@
   "rules": {
     "react/jsx-sort-props": "error",
     "tailwindcss/classnames-order": "error"
+  },
+  "settings": {
+    "tailwindcss": {
+      "callees": ["cn"]
+    }
   }
 }

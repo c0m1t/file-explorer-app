@@ -9,19 +9,18 @@ export default function DefaultLayout(props: DefaultLayoutProps) {
 
   return (
     <div
-      className="relative m-0 my-auto max-w-full"
+      className="relative m-0 my-auto min-h-screen max-w-full"
       style={{ paddingTop: "var(--header-height)" }}
     >
       <header
-        className="fixed top-0 flex w-full flex-col justify-center border-b p-6"
+        className="fixed top-0 flex w-full flex-col justify-center border-b bg-background p-6"
         style={{
-          background: "var(--background-start-rgb)",
           height: "var(--header-height)",
         }}
       >
         <ThemeSelect />
       </header>
-      <main className="my-6 px-6">{children}</main>
+      {children}
     </div>
   );
 }
