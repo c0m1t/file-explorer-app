@@ -71,7 +71,7 @@ export default function FileManager(props: FileManagerProps) {
     }
 
     toast({
-      description: "opening" + getFileSystemNodeFullName(node),
+      description: "opening " + getFileSystemNodeFullName(node),
     });
   };
 
@@ -102,7 +102,7 @@ export default function FileManager(props: FileManagerProps) {
           </Button>
         </div>
         <span className="flex-1 overflow-hidden truncate">
-          {currentFolderId ? data[currentFolderId].name : "Root"}
+          {currentFolderId ? data[currentFolderId].name : "root"}
         </span>
         {/* <div className="hidden items-center px-2  md:flex">
           <div className="mr-2 rounded bg-background p-2">

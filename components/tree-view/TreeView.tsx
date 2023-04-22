@@ -140,7 +140,7 @@ const TreeViewItem = React.forwardRef<HTMLLIElement, TreeViewItemProps>(
     return (
       <li
         aria-expanded={expandable ? expanded : undefined}
-        aria-selected={undefined}
+        aria-selected={selected}
         onClick={handleClick}
         ref={forwardedRef}
         role="treeitem"
@@ -156,7 +156,7 @@ const TreeViewItem = React.forwardRef<HTMLLIElement, TreeViewItemProps>(
           >
             <span
               className={cn("inline-block px-1 align-middle hover:bg-accent", {
-                ["bg-ring text-primary  hover:bg-ring"]: selected,
+                // ["bg-ring text-primary  hover:bg-ring"]: selected,
               })}
             >
               <span className={cn("flex items-center px-1")}>
@@ -192,7 +192,7 @@ const TreeViewItem = React.forwardRef<HTMLLIElement, TreeViewItemProps>(
         ) : (
           <span
             className={cn("inline-block px-1 align-top hover:bg-accent", {
-              ["bg-ring text-primary hover:bg-ring"]: selected,
+              // ["bg-ring text-primary hover:bg-ring"]: selected,
             })}
           >
             {label}
