@@ -4,7 +4,7 @@ export default function Spinner(props: SpinnerProps) {
   return (
     <span role="status" {...props}>
       <svg
-        className="mx-1 h-4 w-4 animate-spin text-white"
+        className="mx-1 h-4 w-4 animate-spin text-accent-1"
         fill="none"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"

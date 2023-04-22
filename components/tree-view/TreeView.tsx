@@ -163,13 +163,14 @@ const TreeViewItem = React.forwardRef<HTMLLIElement, TreeViewItemProps>(
                 <Collapsible.Trigger
                   aria-expanded={undefined}
                   asChild
+                  className="text-accent-1"
                   onDoubleClick={(e) => {
                     e.stopPropagation();
                   }}
                   tabIndex={-1}
                   type={undefined}
                 >
-                  <span className="focus-visible:outline-none">
+                  <span className="focus-visible:outline-none ">
                     <ChevronRight
                       className={cn({ ["rotate-90"]: expanded })}
                       size={16}

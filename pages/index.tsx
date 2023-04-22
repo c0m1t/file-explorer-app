@@ -76,7 +76,7 @@ export default function Home(props: HomeProps) {
         >
           Update
         </Button>
-        <span className="mr-2 text-sm">
+        <span className="mr-2 text-sm text-accent-1">
           <span>Last updated at </span>
           {lastUpdatedAt ? (
             <time dateTime={new Date(lastUpdatedAt).toISOString()}>

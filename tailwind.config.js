@@ -35,6 +35,7 @@ module.exports = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          1: "hsl(var(--accent-1))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",

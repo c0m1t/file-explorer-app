@@ -38,7 +38,7 @@ function renderTree(
           <TreeView.Item
             key={node.id}
             label={
-              <span className="flex items-center">
+              <span className="flex items-center text-accent-1">
                 <span className="mr-1">
                   <FileManagerNodeIcon ext={node.ext} size={0.7} />
                 </span>
