@@ -59,7 +59,7 @@ const TreeView = React.forwardRef<HTMLUListElement, TreeViewProps>(
     );
 
     const isExpandable = (id: string) => {
-      const { children } = map[id];
+      const { children } = map.get(id);
 
       return Array.isArray(children) ? true : children;
     };

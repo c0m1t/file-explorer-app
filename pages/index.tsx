@@ -2,11 +2,10 @@ import * as React from "react";
 import Button from "@/components/Button";
 import { getDefaultLayout } from "@/components/DefaultLayout";
 import Spinner from "@/components/Spinner";
-import FileManager, {
-  FileSystemNodesData,
-} from "@/components/file-manager/FileManager";
+import FileManager from "@/components/file-manager/FileManager";
 import { useToast } from "@/components/useToast";
 import fetcher from "@/lib/fetcher";
+import { FileSystemNodesData } from "@/lib/fileSystem";
 import useSWR from "swr";
 
 const REFETCH_INTERVAL = 30 * 1000;

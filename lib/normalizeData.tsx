@@ -1,9 +1,5 @@
 import { DataNode } from "./data";
-import {
-  FileSystemNodeInfo,
-  FileSystemNodeType,
-  FileSystemNodesData,
-} from "@/components/file-manager/FileManager";
+import { FileSystemNodeType, FileSystemNodesData } from "./fileSystem";
 
 export function normalizeData(nodes: DataNode[]): FileSystemNodesData {
   const map: FileSystemNodesData = {};
@@ -36,33 +32,6 @@ export function normalizeData(nodes: DataNode[]): FileSystemNodesData {
   }
 
   return map;
-}
-
-export function getChildrenArrayNodes(
-  nodes: FileSystemNodesData,
-  parentId: string | null
-): FileSystemNodeInfo[] {
-  const childrenArray: FileSystemNodeInfo[] = [];
-
-  // TODO:
-  if (parentId === null) {
-    for (const id in nodes) {
-      const node = nodes[id];
-
-      if (node.parent === null) {
-        childrenArray.push(nodes[id]);
-      }
-    }
-    return childrenArray;
-  }
-
-  const parentNode = nodes[parentId];
-
-  parentNode.children?.forEach((id) => {
-    childrenArray.push(nodes[id]);
-  });
-
-  return childrenArray;
 }
 
 // We could use nested data structure instead of normalizing data

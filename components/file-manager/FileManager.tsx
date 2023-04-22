@@ -4,22 +4,15 @@ import { useToast } from "../useToast";
 import { FileManagerContext } from "./FileManagerContext";
 import FileManagerPane from "./FileManagerPane";
 import FileManagerTreeView from "./FileManagerTreeView";
-import getFileSystemNodeFullName from "@/lib/getFileSystemNodeFullName";
-import { getChildrenArrayNodes } from "@/lib/normalizeData";
+import {
+  FileSystemNodeId,
+  FileSystemNodeInfo,
+  FileSystemNodesData,
+  convertFileSystemObjectToMap,
+  getFileSystemNodeChildrenNodes,
+  getFileSystemNodeFullName,
+} from "@/lib/fileSystem";
 import { ChevronLeft, ChevronRight, SidebarClose } from "lucide-react";
-
-export type FileSystemNodeType = "file" | "folder";
-
-export interface FileSystemNodeInfo {
-  children?: string[]; // We could have an array of nodes instead of ids instead.
-  ext?: string;
-  id: string;
-  name: string;
-  parent: string | null;
-  type: FileSystemNodeType;
-}
-
-export type FileSystemNodesData = Record<string, FileSystemNodeInfo>;
 
 export interface FileManagerProps extends React.HTMLAttributes<HTMLDivElement> {
   data: FileSystemNodesData;
@@ -28,19 +21,29 @@ export interface FileManagerProps extends React.HTMLAttributes<HTMLDivElement> {
 export default function FileManager(props: FileManagerProps) {
   const { className, data, ...rest } = props;
 
-  const [history, setHistory] = React.useState<Array<string | null>>([null]);
+  const [map] = React.useState(() => {
+    return convertFileSystemObjectToMap(data);
+  });
+
+  const [history, setHistory] = React.useState<Array<FileSystemNodeId | null>>([
+    null,
+  ]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = React.useState(0);
 
   const currentFolderId = history[currentHistoryIndex];
-  const currentFolderNode = currentFolderId ? data[currentFolderId] : null;
+  const currentFolderNode = map.get(currentFolderId);
+
+  if (!currentFolderNode) {
+    console.warn(`Folder with id ${currentFolderId} was not found.`);
+  }
 
   const { toast } = useToast();
 
   const currentFolderChildren = React.useMemo(() => {
-    return getChildrenArrayNodes(data, currentFolderId);
-  }, [data, currentFolderId]);
+    return getFileSystemNodeChildrenNodes(map, currentFolderId);
+  }, [map, currentFolderId]);
 
-  const navigateTo = (id: string) => {
+  const navigateTo = (id: FileSystemNodeId) => {
     setHistory((history) => [...history.slice(0, currentHistoryIndex + 1), id]);
     setCurrentHistoryIndex((currentHistoryIndex) => currentHistoryIndex + 1);
   };
@@ -79,7 +82,11 @@ export default function FileManager(props: FileManagerProps) {
 
   return (
     <FileManagerContext.Provider
-      value={{ currentFolderId, currentFolderChildren, currentFolderNode }}
+      value={{
+        currentFolderId,
+        currentFolderChildren,
+        currentFolderNode,
+      }}
     >
       <div
         {...rest}
@@ -110,7 +117,9 @@ export default function FileManager(props: FileManagerProps) {
             </Button>
           </div>
           <span className="flex-1 overflow-hidden truncate">
-            {getFileSystemNodeFullName(currentFolderNode)}
+            {currentFolderNode
+              ? getFileSystemNodeFullName(currentFolderNode)
+              : ""}
           </span>
           {/* <div className="hidden items-center px-2  md:flex">
           <div className="mr-2 rounded bg-background p-2">
@@ -127,7 +136,7 @@ export default function FileManager(props: FileManagerProps) {
           <div className="w-[250px] border-r">
             <FileManagerTreeView
               currentFolderId={currentFolderId}
-              data={data}
+              map={map}
               openNode={openNode}
             />
           </div>

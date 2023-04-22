@@ -1,9 +1,12 @@
 import * as React from "react";
-import { FileSystemNodeInfo } from "./FileManager";
 import FileManagerNodeIcon from "./FileManagerNodeIcon";
 import FileManagerStatusBar from "./FileManagerStatusBar";
 import cn from "@/lib/cn";
-import getFileSystemNodeFullName from "@/lib/getFileSystemNodeFullName";
+import {
+  FileSystemNodeId,
+  FileSystemNodeInfo,
+  getFileSystemNodeFullName,
+} from "@/lib/fileSystem";
 
 export interface FileManagerPaneProps {
   className?: string;
@@ -14,13 +17,15 @@ export interface FileManagerPaneProps {
 export default function FileManagerPane(props: FileManagerPaneProps) {
   const { openNode, currentFolderChildren, className } = props;
 
-  const [focusedId, setfocusedId] = React.useState<string | null>(null);
+  const [focusedId, setfocusedId] = React.useState<FileSystemNodeId | null>(
+    null
+  );
 
   const focusedNode = currentFolderChildren.find(
     (node) => node.id === focusedId
   );
 
-  const getNextNode = (id: string) => {
+  const getNextNode = (id: FileSystemNodeId) => {
     const index = currentFolderChildren.findIndex((node) => node.id === id);
 
     if (index < currentFolderChildren.length - 1) {
@@ -30,7 +35,7 @@ export default function FileManagerPane(props: FileManagerPaneProps) {
     return id;
   };
 
-  const getPreviousNode = (id: string) => {
+  const getPreviousNode = (id: FileSystemNodeId) => {
     const index = currentFolderChildren.findIndex((node) => node.id === id);
 
     if (index > 0) {
@@ -40,7 +45,11 @@ export default function FileManagerPane(props: FileManagerPaneProps) {
     return id;
   };
 
-  const focusNode = (event: React.SyntheticEvent, id: string) => {
+  const focusNode = (event: React.SyntheticEvent, id: FileSystemNodeId) => {
+    if (id === null) {
+      return;
+    }
+
     document.getElementById(id)?.focus();
 
     if (id) {
@@ -48,11 +57,13 @@ export default function FileManagerPane(props: FileManagerPaneProps) {
     }
   };
 
-  const focuseNextNode = (event: React.SyntheticEvent, id: string) =>
+  const focuseNextNode = (event: React.SyntheticEvent, id: FileSystemNodeId) =>
     focusNode(event, getNextNode(id));
 
-  const focusPreviousNode = (event: React.SyntheticEvent, id: string) =>
-    focusNode(event, getPreviousNode(id));
+  const focusPreviousNode = (
+    event: React.SyntheticEvent,
+    id: FileSystemNodeId
+  ) => focusNode(event, getPreviousNode(id));
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     const key = event.key;
@@ -110,34 +121,49 @@ export default function FileManagerPane(props: FileManagerPaneProps) {
             </tr>
           </thead>
           <tbody onKeyDown={handleKeyDown}>
-            {currentFolderChildren.map((node, index) => (
-              <tr
-                aria-rowindex={index}
-                className={cn("text-lg hover:bg-accent", {
-                  "bg-ring": focusedId === node.id,
-                })}
-                id={node.id}
-                key={node.id}
-                onBlur={handleBlur}
-                onDoubleClick={(event) => handleDoubleClick(event, node)}
-                onFocus={(event) => handleFocus(event, node.id)}
-                tabIndex={0}
-              >
-                <td className="pl-3">
-                  <span>
-                    <FileManagerNodeIcon ext={node.ext} size={0.8} />
-                  </span>
-                </td>
-                <td>
-                  <span className="overflow-hidden truncate">
-                    {
-                      //FIXME: Even when the file name is truncated, show the extension
-                      getFileSystemNodeFullName(node)
-                    }
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {currentFolderChildren.map((node, index) => {
+              if (node.id === null) {
+                console.error(
+                  "Root item should not be rendered in the manager pane."
+                );
+
+                return null;
+              }
+              return (
+                <tr
+                  aria-rowindex={index}
+                  className={cn("text-lg hover:bg-accent", {
+                    "bg-ring": focusedId === node.id,
+                  })}
+                  id={node.id}
+                  key={node.id}
+                  onBlur={handleBlur}
+                  onDoubleClick={(event) => handleDoubleClick(event, node)}
+                  onFocus={(event) =>
+                    handleFocus(
+                      event,
+                      // FIXME:
+                      node.id as string
+                    )
+                  }
+                  tabIndex={0}
+                >
+                  <td className="pl-3">
+                    <span>
+                      <FileManagerNodeIcon ext={node.ext} size={0.8} />
+                    </span>
+                  </td>
+                  <td>
+                    <span className="overflow-hidden truncate">
+                      {
+                        //FIXME: Even when the file name is truncated, show the extension
+                        getFileSystemNodeFullName(node)
+                      }
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

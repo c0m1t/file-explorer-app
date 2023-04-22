@@ -1,38 +1,41 @@
 import * as React from "react";
 import * as TreeView from "../tree-view";
-import { FileSystemNodeInfo, FileSystemNodesData } from "./FileManager";
 import FileManagerNodeIcon from "./FileManagerNodeIcon";
 import cn from "@/lib/cn";
-import getFileSystemNodeFullName from "@/lib/getFileSystemNodeFullName";
-import { getChildrenArrayNodes } from "@/lib/normalizeData";
+import {
+  FileSystemNodeInfo,
+  FileSystemNodesMap,
+  getFileSystemNodeChildrenNodes,
+  getFileSystemNodeFullName,
+} from "@/lib/fileSystem";
 
 export interface FileManagerTreeViewProps {
   className?: string;
   currentFolderId: string | null;
-  data: FileSystemNodesData;
+  map: FileSystemNodesMap;
   openNode: (node: FileSystemNodeInfo) => void;
 }
 
 export default function FileManagerTreeView(props: FileManagerTreeViewProps) {
-  const { currentFolderId, data, openNode, className } = props;
+  const { map, openNode, className } = props;
 
-  const rootNodesArray = getChildrenArrayNodes(data, null);
+  const children = getFileSystemNodeChildrenNodes(map, null);
 
   return (
-    <TreeView.Root className={cn("h-full overflow-auto", className)} map={data}>
-      {renderTree(rootNodesArray, data, openNode)}
+    <TreeView.Root className={cn("h-full overflow-auto", className)} map={map}>
+      {renderTree(children, map, openNode)}
     </TreeView.Root>
   );
 }
 
 function renderTree(
-  array: FileSystemNodeInfo[],
-  data: FileSystemNodesData,
+  children: FileSystemNodeInfo[],
+  map: FileSystemNodesMap,
   openNode: (node: FileSystemNodeInfo) => void
 ) {
   return (
     <React.Fragment>
-      {array.map((node) => {
+      {children.map((node) => {
         const fileName = getFileSystemNodeFullName(node);
         return (
           <TreeView.Item
@@ -50,7 +53,10 @@ function renderTree(
                 </span>
               </span>
             }
-            nodeId={node.id}
+            nodeId={
+              //FIXME:
+              node.id as string
+            }
             onDoubleClick={(event) => {
               openNode(node);
 
@@ -59,8 +65,10 @@ function renderTree(
           >
             {Array.isArray(node.children)
               ? renderTree(
-                  node.children.map((id) => data[id]),
-                  data,
+                  node.children
+                    .map((id) => map.get(id))
+                    .filter(Boolean) as FileSystemNodeInfo[],
+                  map,
                   openNode
                 )
               : null}
