@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
+import { Toaster } from "@/components/Toaster";
 import AppProviders, { AppProps } from "@/lib/Providers";
 
 const interFont = Inter({
@@ -23,6 +24,7 @@ export default function App(props: AppProps) {
       `}</style>
 
       {getLayout(<Component {...pageProps} />)}
+      <Toaster />
     </AppProviders>
   );
 }

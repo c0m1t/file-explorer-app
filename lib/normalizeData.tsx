@@ -2,12 +2,11 @@ import { DataNode } from "./data";
 import {
   FileSystemNodeInfo,
   FileSystemNodeType,
+  FileSystemNodesData,
 } from "@/components/file-manager/FileManager";
 
-export function normalizeData(
-  nodes: DataNode[]
-): Record<string, FileSystemNodeInfo> {
-  const map: Record<string, FileSystemNodeInfo> = {};
+export function normalizeData(nodes: DataNode[]): FileSystemNodesData {
+  const map: FileSystemNodesData = {};
 
   // Populate
   for (let i = 0; i < nodes.length; i++) {
@@ -40,7 +39,7 @@ export function normalizeData(
 }
 
 export function getChildrenArrayNodes(
-  nodes: Record<string, FileSystemNodeInfo>,
+  nodes: FileSystemNodesData,
   parentId: string | null
 ): FileSystemNodeInfo[] {
   const childrenArray: FileSystemNodeInfo[] = [];

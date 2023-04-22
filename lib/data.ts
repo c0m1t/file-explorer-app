@@ -15,6 +15,8 @@ export type DataFileNode = {
 
 export type DataNode = DataFolderNode | DataFileNode;
 
+export type Data = DataNode[];
+
 export const data: DataNode[] = [
   {
     id: "a8e94081-3bf0-4411-b97f-05b123c963f1",

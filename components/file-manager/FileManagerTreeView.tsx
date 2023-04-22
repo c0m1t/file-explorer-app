@@ -1,14 +1,15 @@
 import * as React from "react";
 import * as TreeView from "../tree-view";
-import { FileSystemNodeInfo } from "./FileManager";
+import { FileSystemNodeInfo, FileSystemNodesData } from "./FileManager";
 import FileManagerNodeIcon from "./FileManagerNodeIcon";
 import cn from "@/lib/cn";
+import getFileSystemNodeFullName from "@/lib/getFileSystemNodeFullName";
 import { getChildrenArrayNodes } from "@/lib/normalizeData";
 
 export interface FileManagerTreeViewProps {
   className?: string;
   currentFolderId: string | null;
-  data: Record<string, FileSystemNodeInfo>;
+  data: FileSystemNodesData;
   openNode: (node: FileSystemNodeInfo) => void;
 }
 
@@ -26,13 +27,13 @@ export default function FileManagerTreeView(props: FileManagerTreeViewProps) {
 
 function renderTree(
   array: FileSystemNodeInfo[],
-  data: Record<string, FileSystemNodeInfo>,
+  data: FileSystemNodesData,
   openNode: (node: FileSystemNodeInfo) => void
 ) {
   return (
     <React.Fragment>
       {array.map((node) => {
-        const fileName = node.name + (node.ext ? `.${node.ext}` : "");
+        const fileName = getFileSystemNodeFullName(node);
         return (
           <TreeView.Item
             key={node.id}

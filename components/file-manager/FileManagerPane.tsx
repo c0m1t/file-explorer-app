@@ -2,6 +2,7 @@ import * as React from "react";
 import { FileSystemNodeInfo } from "./FileManager";
 import FileManagerNodeIcon from "./FileManagerNodeIcon";
 import cn from "@/lib/cn";
+import getFileSystemNodeFullName from "@/lib/getFileSystemNodeFullName";
 
 export interface FileManagerPaneProps {
   className?: string;
@@ -127,7 +128,7 @@ export default function FileManagerPane(props: FileManagerPaneProps) {
                 <span className="overflow-hidden truncate">
                   {
                     //FIXME: Even when the file name is truncated, show the extension
-                    node.name + (node.ext ? `.${node.ext}` : "")
+                    getFileSystemNodeFullName(node)
                   }
                 </span>
               </td>

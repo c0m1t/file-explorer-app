@@ -1,7 +1,9 @@
 import * as React from "react";
 import Button from "../Button";
+import { useToast } from "../useToast";
 import FileManagerPane from "./FileManagerPane";
 import FileManagerTreeView from "./FileManagerTreeView";
+import getFileSystemNodeFullName from "@/lib/getFileSystemNodeFullName";
 import { getChildrenArrayNodes } from "@/lib/normalizeData";
 import { ChevronLeft, ChevronRight, SidebarClose } from "lucide-react";
 
@@ -29,6 +31,8 @@ export default function FileManager(props: FileManagerProps) {
   const [currentHistoryIndex, setCurrentHistoryIndex] = React.useState(0);
 
   const currentFolderId = history[currentHistoryIndex];
+
+  const { toast } = useToast();
 
   const currentNodes = React.useMemo(() => {
     return getChildrenArrayNodes(data, currentFolderId);
@@ -66,7 +70,9 @@ export default function FileManager(props: FileManagerProps) {
       return;
     }
 
-    alert("Openning file " + node.name);
+    toast({
+      description: "opening" + getFileSystemNodeFullName(node),
+    });
   };
 
   return (
