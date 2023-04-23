@@ -74,3 +74,24 @@ export function getFileSystemNodeChildrenNodes(
 
   return childrenArray;
 }
+
+export function getFileSystemNodeAndAncestorsIds(
+  map: FileSystemNodesMap,
+  id: FileSystemNodeId
+): FileSystemNodeId[] {
+  const ids: FileSystemNodeId[] = [];
+
+  let node = map.get(id);
+
+  while (node) {
+    ids.push(node.id);
+
+    if (node.id === null) {
+      return ids;
+    }
+
+    node = map.get(node.parent);
+  }
+
+  return ids;
+}

@@ -1,10 +1,16 @@
 import * as React from "react";
-import { FileSystemNodeInfo } from "@/lib/fileSystem";
+import {
+  FileSystemNodeId,
+  FileSystemNodeInfo,
+  FileSystemNodesMap,
+} from "@/lib/fileSystem";
 
 export interface FileManagerContextValue {
   currentFolderChildren?: FileSystemNodeInfo[];
   currentFolderId: string | null;
   currentFolderNode?: FileSystemNodeInfo | null;
+  map: FileSystemNodesMap;
+  navigateTo: (id: FileSystemNodeId) => void;
 }
 
 export const FileManagerContext = React.createContext<

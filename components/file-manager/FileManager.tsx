@@ -86,6 +86,8 @@ export default function FileManager(props: FileManagerProps) {
         currentFolderId,
         currentFolderChildren,
         currentFolderNode,
+        map,
+        navigateTo,
       }}
     >
       <div
@@ -121,19 +123,9 @@ export default function FileManager(props: FileManagerProps) {
               ? getFileSystemNodeFullName(currentFolderNode)
               : ""}
           </span>
-          {/* <div className="hidden items-center px-2  md:flex">
-          <div className="mr-2 rounded bg-background p-2">
-            <LucideList size={20} />
-            <span className="sr-only">Show items in a list</span>
-          </div>
-          <div className="bg-accent p-2 opacity-50">
-            <LucideLayoutGrid size={20} />
-            <span className="sr-only">Show items as icons</span>
-          </div>
-        </div> */}
         </div>
-        <div className="flex flex-1 overflow-hidden">
-          <div className="w-[250px] border-r">
+        <div className="flex w-full flex-1 overflow-hidden text-clip">
+          <div className="w-[250px] shrink-0 border-r">
             <FileManagerTreeView
               currentFolderId={currentFolderId}
               map={map}
@@ -141,7 +133,7 @@ export default function FileManager(props: FileManagerProps) {
             />
           </div>
           <FileManagerPane
-            className="flex-1"
+            className="w-[0px] flex-1"
             currentFolderChildren={currentFolderChildren}
             openNode={openNode}
           />

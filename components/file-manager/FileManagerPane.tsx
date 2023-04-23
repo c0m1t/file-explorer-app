@@ -1,5 +1,6 @@
 import * as React from "react";
 import FileManagerNodeIcon from "./FileManagerNodeIcon";
+import FileManagerPathBar from "./FileManagerPathBar";
 import FileManagerStatusBar from "./FileManagerStatusBar";
 import cn from "@/lib/cn";
 import {
@@ -167,6 +168,7 @@ export default function FileManagerPane(props: FileManagerPaneProps) {
           </tbody>
         </table>
       </div>
+      <FileManagerPathBar />
       <FileManagerStatusBar />
     </div>
   );
