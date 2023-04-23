@@ -1,11 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Data } from "@/lib/data";
+import { Data, normalizeData } from "@/lib/data";
 import { ENV } from "@/lib/env";
 import fetcher from "@/lib/fetcher";
-import { normalizeData } from "@/lib/normalizeData";
 
 async function getData() {
-  return fetcher<Data>("https://dev.test.sega.co.uk/api/list", {
+  return fetcher<Data>(ENV.API_URL, {
     headers: {
       "x-secret-api-key": ENV.X_SECRET_API_KEY,
     },
